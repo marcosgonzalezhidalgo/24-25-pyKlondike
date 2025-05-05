@@ -23,10 +23,13 @@ public class ClienteKlondike {
             switch (opcion) {
                 case 1:
                     klondike.moverCarta();
+                    break;
                 case 2:
                     klondike.voltearCarta();
+                    break;
                 case 3:
                     klondike.mostrarEstado();
+                    break;
                 case 4:
                     System.out.println("Gracias por jugar!");
                     scanner.close();

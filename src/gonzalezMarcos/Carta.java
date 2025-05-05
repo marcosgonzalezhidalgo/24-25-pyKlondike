@@ -1,13 +1,23 @@
 package gonzalezMarcos;
 
 public class Carta {
-    private int palo;
-    private int numero;
+    private int palo; 
+    private int numero; 
     private boolean volteada;
 
     public Carta(int palo, int numero) {
-        this.palo = palo;
-        this.numero = numero;
+        if (palo >= 0 && palo <= 3) {
+            this.palo = palo;
+        } else {
+            this.palo = -1; 
+        }
+
+        if (numero >= 0 && numero <= 12) {
+            this.numero = numero;
+        } else {
+            this.numero = -1; 
+        }
+
         this.volteada = false;
     }
 
@@ -29,11 +39,15 @@ public class Carta {
 
     public void mostrar() {
         if (volteada) {
-            String[] palos = {"Corazones", "Diamantes", "Tréboles", "Picas"};
-            String[] numeros = {"As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-            System.out.println(numeros[numero] + " de " + palos[palo]);
+            if (numero >= 0 && numero <= 12 && palo >= 0 && palo <= 3) {
+                String[] palos = {"♥️", "♦️", "♣️", "♠️"};
+                String[] numeros = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+                System.out.print(numeros[numero] + " " + palos[palo] + " ");
+            } else {
+                System.out.print("[? ?] ");  
+            }
         } else {
-            System.out.println("Carta volteada (no visible)");
+            System.out.print("[? ?] "); 
         }
     }
 }

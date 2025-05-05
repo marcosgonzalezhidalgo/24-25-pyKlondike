@@ -12,7 +12,7 @@ public class Palo {
 
     public void poner(Carta carta) {
         if (ultima < 13) {
-            if (ultima == 0 && carta.getNumero() == 0) { // As
+            if (ultima == 0 && carta.getNumero() == 1) { // As
                 cartas[ultima] = carta;
                 ultima++;
             } else if (ultima > 0 && cartas[ultima - 1].getNumero() == carta.getNumero() - 1) {
