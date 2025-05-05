@@ -1,4 +1,4 @@
-package masiasManuel.v001;
+package gonzalezMarcos;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

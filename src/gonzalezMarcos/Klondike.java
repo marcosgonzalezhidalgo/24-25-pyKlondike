@@ -1,109 +1,100 @@
 package gonzalezMarcos;
 
-import java.io.Console;
+import java.util.*;
 
 public class Klondike {
 
     private Baraja baraja;
-    private Palo[] palos;
     private Descarte descarte;
+    private Palo[] palos;
     private Columna[] columnas;
-
-    private final int NUMERO_PALOS = 4;
-    private final int NUMERO_COLUMNAS = 7;
+    private boolean juegoTerminado;
 
     public Klondike() {
-        baraja = new Baraja();
-        descarte = new Descarte();
-        palos = new Palo[NUMERO_PALOS];
-        for (int palo = 0; palo < NUMERO_PALOS; palo++) {
-            palos[palo] = new Palo();
+        this.baraja = new Baraja();
+        this.descarte = new Descarte(24); // Capacidad del descarte
+        this.palos = new Palo[4]; // Cuatro palos
+        this.columnas = new Columna[7]; // Siete columnas en el solitario Klondike
+        this.juegoTerminado = false;
+
+        // Inicializamos los palos
+        for (int i = 0; i < 4; i++) {
+            palos[i] = new Palo();
         }
-        columnas = new Columna[NUMERO_COLUMNAS];
-        for (int columna = 0; columna < NUMERO_COLUMNAS; columna++) {
-            columnas[columna] = new Columna(columna + 1, baraja);
+
+        // Inicializamos las columnas
+        for (int i = 0; i < 7; i++) {
+            columnas[i] = new Columna(7);
         }
+
+        // Distribuimos las cartas en las columnas y la baraja
+        distribuirCartas();
     }
 
-    public void jugar() {
-        boolean estaJugando = true;
-        while (estaJugando) {
-            Menu menu = new Menu();
-            menu.imprimeOpciones();
-            mostrarTapete();
-            int opcionUsuario = menu.getOpcion();
-            if (opcionUsuario == 1) {
-                baraja.moverA(descarte);
-            } else if (opcionUsuario == 2) {
-                descarte.moverA(escogerPalo("A"));
-            } else if (opcionUsuario == 3) {
-                Columna unaColumna = escogerColumna("A");
-                descarte.moverA(unaColumna);
-            } else if (opcionUsuario == 4) {
-                Palo unPalo = escogerPalo("De");
-                Columna unaColumna = escogerColumna("A");
-                unPalo.moverA(unaColumna);
-            } else if (opcionUsuario == 5) {
-                Columna unaColumna = escogerColumna("De");
-                Palo unPalo = escogerPalo("A");
-                unaColumna.moverA(unPalo);
-            } else if (opcionUsuario == 6) {
-                Columna unaColumna = escogerColumna("De");
-                Columna otraColumna = escogerColumna("A");
-                unaColumna.moverA(otraColumna);
-            } else if (opcionUsuario == 7) {
-                Columna unaColumna = escogerColumna("De");
-                unaColumna.voltear();
-            } else if (opcionUsuario == 8) {
-                descarte.voltear(baraja);
-            } else if (opcionUsuario == 9) {
-                estaJugando = false;
+    // Método para distribuir las cartas a las columnas y la baraja
+    private void distribuirCartas() {
+        // Barajamos y distribuimos cartas en las columnas
+        baraja.barajar();
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j <= i; j++) {
+                Carta carta = baraja.sacar();
+                columnas[i].poner(carta);
+                if (j == i) {
+                    carta.voltear(); // Volteamos la última carta de cada columna
+                }
             }
-
         }
     }
 
-    private Columna escogerColumna(String prefijo) {
-        int indiceColumna = escogerOpcion(prefijo, NUMERO_COLUMNAS, "que columna?");
-        return columnas[indiceColumna - 1];
+    // Método para mover una carta de una columna a otra
+    public void moverCarta() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Mostrar columnas y elegir de dónde mover
+        System.out.println("Elija una columna de origen (1-7): ");
+        int origen = scanner.nextInt() - 1;
+
+        // Mostrar columnas y elegir a dónde mover
+        System.out.println("Elija una columna de destino (1-7): ");
+        int destino = scanner.nextInt() - 1;
+
+        // Mover la carta de la columna origen a la columna destino
+        columnas[origen].moverA(columnas[destino]);
     }
 
-    private Palo escogerPalo(String prefijo) {
-        int indicePalo = escogerOpcion(prefijo, NUMERO_PALOS, "que palo?");
-        return palos[indicePalo - 1];
+    // Método para voltear una carta del mazo a la pila de descarte
+    public void voltearCarta() {
+        descarte.voltear(baraja);
     }
 
-    private int escogerOpcion(String prefijo, int max, String mensaje) {
-        Console console = new Console();
-        console.readInt(prefijo + mensaje + "[1-" + max + "] ");
+    // Mostrar estado del juego (columnas y palos)
+    public void mostrarEstado() {
+        System.out.println("Estado del juego:");
 
-    }
+        // Mostrar columnas
+        for (int i = 0; i < 7; i++) {
+            System.out.print("Columna " + (i + 1) + ": ");
+            columnas[i].mostrar();
+        }
 
-    private void mostrarTapete() {
-        Console console = new Console();
-        baraja.mostrar();
+        // Mostrar descarte
+        System.out.print("Descarte: ");
         descarte.mostrar();
-        for (int palo = 0; palo < NUMERO_PALOS; palo++) {
-            console.writeln("Palo " + palo);
-            palos[palo].mostrar();
-        }
-        for (int columna = 0; columna < NUMERO_COLUMNAS; columna++) {
-            console.writeln("Columna " + columna);
-            columnas[columna].mostrar();
+
+        // Mostrar palos
+        for (int i = 0; i < 4; i++) {
+            System.out.print("Palo " + (i + 1) + ": ");
+            palos[i].mostrar();
         }
     }
 
-    private void imprimirOpciones() {
-        console.writeln("OPCIONES>");
-        console.writeln("1. Mover de Baraja a Descarte");
-        console.writeln("2. Mover de Descarte a Palo");
-        console.writeln("3. Mover de Descarte a Columna");
-        console.writeln("4. Mover de Palo a Columna");
-        console.writeln("5. Mover de Columna a Palo");
-        console.writeln("6. Mover de Columna a Columna");
-        console.writeln("7. Voltear carta de Columna");
-        console.writeln("8. Voltear Descarte en Baraja");
-        console.writeln("9. Salir");
+    // Verificar si el juego ha terminado (si todos los palos están completos)
+    public boolean juegoTerminado() {
+        for (Palo palo : palos) {
+            if (palo.vacio() || palo.cima().getNumero() != 12) {
+                return false;
+            }
+        }
+        return true;
     }
-
 }

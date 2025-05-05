@@ -1,24 +1,45 @@
 package gonzalezMarcos;
 
 public class Columna {
+    private Carta[] cartas;
+    private int ultima;
 
-    public Columna(int i, Baraja baraja) {
-        // TODO Auto-generated constructor stub
+    public Columna(int capacidad) {
+        cartas = new Carta[capacidad];
+        ultima = 0;
     }
 
-    public void moverA(Palo unPalo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moverA'");
+    public void poner(Carta carta) {
+        if (ultima < cartas.length) {
+            cartas[ultima] = carta;
+            ultima++;
+        } else {
+            System.out.println("La columna está llena.");
+        }
     }
 
     public void moverA(Columna otraColumna) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moverA'");
+        if (ultima > 0) {
+            Carta carta = cartas[ultima - 1];
+            ultima--;
+            otraColumna.poner(carta);
+        } else {
+            System.out.println("La columna está vacía.");
+        }
     }
 
-    public void voltear() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'voltear'");
+    public void mostrar() {
+        System.out.println("Columna:");
+        if (ultima == 0) {
+            System.out.println("La columna está vacía.");
+        } else {
+            for (int i = 0; i < ultima; i++) {
+                cartas[i].mostrar();
+            }
+        }
     }
 
+    public boolean vacia() {
+        return ultima == 0;
+    }
 }
