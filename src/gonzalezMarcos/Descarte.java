@@ -1,7 +1,6 @@
 package gonzalezMarcos;
 
-public class Descarte {
-
+class Descarte {
     private Carta[] cartas;
     private int ultima;
 
@@ -10,45 +9,31 @@ public class Descarte {
         ultima = 0;
     }
 
-    public void moverA(Columna unaColumna) {
-        if (ultima > 0) {
-            Carta carta = cartas[ultima - 1];
-            ultima--;
-            unaColumna.poner(carta);
-        } else {
-            System.out.println("El descarte está vacío.");
-        }
+    public void moverA(Columna columna) {
+        if (ultima > 0) columna.poner(cartas[--ultima]);
     }
 
     public void moverA(Palo palo) {
-        if (ultima > 0) {
-            Carta carta = cartas[ultima - 1];
-            ultima--;
-            palo.poner(carta);
-        } else {
-            System.out.println("El descarte está vacío.");
-        }
+        if (ultima > 0) palo.poner(cartas[--ultima]);
     }
 
     public void voltear(Baraja baraja) {
         if (!baraja.vacia()) {
             Carta carta = baraja.sacar();
             carta.voltear();
-            cartas[ultima] = carta;
-            ultima++;
-        } else {
-            System.out.println("La baraja está vacía, no se puede voltear.");
+            cartas[ultima++] = carta;
         }
     }
 
     public void mostrar() {
         if (ultima == 0) {
-            System.out.println("El descarte está vacío.");
+            System.out.println("(vacío)");
         } else {
-            System.out.println("Cartas en el descarte:");
             for (int i = 0; i < ultima; i++) {
                 cartas[i].mostrar();
             }
+            System.out.println();
         }
     }
 }
+

@@ -1,6 +1,6 @@
 package gonzalezMarcos;
 
-public class Columna {
+class Columna {
     private Carta[] cartas;
     private int ultima;
 
@@ -10,33 +10,33 @@ public class Columna {
     }
 
     public void poner(Carta carta) {
-        if (ultima < cartas.length) {
-            cartas[ultima] = carta;
-            ultima++;
-        } else {
-            System.out.println("La columna está llena.");
+        cartas[ultima++] = carta;
+    }
+
+    public void moverA(Columna otra) {
+        if (ultima > 0) {
+            otra.poner(cartas[--ultima]);
         }
     }
 
-    public void moverA(Columna otraColumna) {
+    public void moverA(Palo palo) {
         if (ultima > 0) {
-            Carta carta = cartas[ultima - 1];
-            ultima--;
-            otraColumna.poner(carta);
-        } else {
-            System.out.println("La columna está vacía.");
+            palo.poner(cartas[--ultima]);
+        }
+    }
+
+    public void voltearUltima() {
+        if (ultima > 0 && !cartas[ultima - 1].isVolteada()) {
+            cartas[ultima - 1].voltear();
         }
     }
 
     public void mostrar() {
-        System.out.println("Columna:");
-        if (ultima == 0) {
-            System.out.println("La columna está vacía.");
-        } else {
-            for (int i = 0; i < ultima; i++) {
-                cartas[i].mostrar();
-            }
+        for (int i = 0; i < ultima; i++) {
+            cartas[i].mostrar();
         }
+        if (ultima == 0) System.out.print("(vacía)");
+        System.out.println();
     }
 
     public boolean vacia() {

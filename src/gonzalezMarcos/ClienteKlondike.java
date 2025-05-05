@@ -5,38 +5,33 @@ import java.util.Scanner;
 public class ClienteKlondike {
     public static void main(String[] args) {
         Klondike klondike = new Klondike();
+        Menu menu = new Menu();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("¡Bienvenido al Solitario Klondike!");
-        klondike.mostrarEstado();
-
         while (!klondike.juegoTerminado()) {
-            System.out.println("Seleccione una acción:");
-            System.out.println("1. Mover carta");
-            System.out.println("2. Voltear una carta del mazo");
-            System.out.println("3. Ver estado del juego");
-            System.out.println("4. Salir");
+            menu.imprimeOpciones();
+            klondike.mostrarEstado();
 
+            System.out.print("\nElige una opción  [1-9]: ");
             int opcion = scanner.nextInt();
-            scanner.nextLine(); 
 
             switch (opcion) {
-                case 1:
-                    klondike.moverCarta();
-                    break;
-                case 2:
-                    klondike.voltearCarta();
-                    break;
-                case 3:
-                    klondike.mostrarEstado();
-                    break;
-                case 4:
+                case 1 -> klondike.voltearCarta();
+                case 2 -> klondike.moverDescarteAPalo();
+                case 3 -> klondike.moverDescarteAColumna();
+                case 4 -> klondike.moverPaloAColumna();
+                case 5 -> klondike.moverColumnaAPalo();
+                case 6 -> klondike.moverColumnaAColumna();
+                case 7 -> klondike.voltearCartaColumna();
+                case 8 -> klondike.voltearCarta();
+                case 9 -> {
                     System.out.println("Gracias por jugar!");
-                    scanner.close();
                     return;
-                default:
-                    System.out.println("Opción inválida.");
+                }
+                default -> System.out.println("Opción inválida.");
             }
+            scanner.close();
         }
+        System.out.println("¡Felicidades! Has completado el solitario.");
     }
 }
